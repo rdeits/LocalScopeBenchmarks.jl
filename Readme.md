@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/rdeits/LocalScopeBenchmarks.jl.svg?branch=master)](https://travis-ci.org/rdeits/LocalScopeBenchmarks.jl)
 [![codecov.io](https://codecov.io/github/rdeits/LocalScopeBenchmarks.jl/coverage.svg?branch=master)](https://codecov.io/github/rdeits/LocalScopeBenchmarks.jl?branch=master)
 
-**tl;dr:** Tired of adding `$` everywhere when you `@benchmark` or `@btime`? Then this package is for you!
+**tl;dr:** Tired of adding `$` everywhere when you `@benchmark` or `@btime`? Try `@localbtime f(x)` instead of `@btime f($x)`.
 
 ## Introduction
 
@@ -36,15 +36,15 @@ much faster, and no unexpected memory allocation. By interpolating `$x`, we get 
 This interpolation trick is easy to do, but I've found it consistently annoying, and it's caused an impressive amount of confusion (kudos to `@NiclasMattsson` on Discourse for finding most of these):
 
 * https://discourse.julialang.org/t/trig-functions-very-slow/15335/54
-* https://discourse.julialang.org/t/another-blas-and-julia-comparison/15411/2?u=rdeits
-* https://discourse.julialang.org/t/allocation-by-staticarrays-in-anonymous-function-macro/14774/2?u=rdeits
-* https://discourse.julialang.org/t/how-to-optimise-and-be-faster-than-java/14457/22?u=rdeits
+* https://discourse.julialang.org/t/another-blas-and-julia-comparison/15411/2
+* https://discourse.julialang.org/t/allocation-by-staticarrays-in-anonymous-function-macro/14774/2
+* https://discourse.julialang.org/t/how-to-optimise-and-be-faster-than-java/14457/22
 * https://discourse.julialang.org/t/interval-arithmetic-computation-time/14633/14
 * https://discourse.julialang.org/t/with-missings-julia-is-slower-than-r/11838/9
 * https://discourse.julialang.org/t/vector-of-matrices-vs-multidimensional-arrays/9602/3
-* https://discourse.julialang.org/t/spurious-allocation/3751/7?u=rdeits
-* https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/19?u=rdeits
-* https://discourse.julialang.org/t/a-generator-with-two-for-keywords-is-slow/7407/5?u=rdeits
+* https://discourse.julialang.org/t/spurious-allocation/3751/7
+* https://discourse.julialang.org/t/improve-the-performance-of-multiplication-of-an-arbitrary-number-of-matrices/10835/19
+* https://discourse.julialang.org/t/a-generator-with-two-for-keywords-is-slow/7407/5
 
 ## There Has To Be a Better Way!
 
