@@ -18,5 +18,5 @@ after_success:
           Pkg.add("Coverage")
           using Coverage
           cd(normpath(dirname(pathof(LocalScopeBenchmarks)), ".."))
-          Coveralls.submit(Coveralls.process_folder())
+          Codecov.submit(process_folder())
         '
