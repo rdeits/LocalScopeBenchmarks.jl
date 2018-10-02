@@ -20,7 +20,9 @@ global_x = 1.0
 
         t1 = @benchmark($sin($x))
         t2 = @localbenchmark(sin(x))
-        @test isinvariant(judge(ratio(median(t1), median(t2))))
+        j = judge_loosely(t1, t2)
+        @show j
+        @test isinvariant(j)
 
         f = sin
         x = 1.0
