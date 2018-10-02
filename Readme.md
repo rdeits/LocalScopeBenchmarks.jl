@@ -53,15 +53,15 @@ Enter `LocalScopeBenchmarks.jl`. This package tries to do exactly one thing: sav
 ```julia
 julia> using LocalScopeBenchmarks
 
-julia> x = 1
-1
+julia> x = 1.0
+1.0
 
 julia> @localbtime sin(x)
-  13.108 ns (0 allocations: 0 bytes)
+  6.556 ns (0 allocations: 0 bytes)
 0.8414709848078965
 ```
 
-We got the same measurement as `@btime sin($x)` without having to add a `$`.
+We got the same measurement as `@btime sin($x)` without having to add a `$`. Hooray!
 
 ### Installation
 
@@ -75,10 +75,10 @@ or just press `]` at the Julia REPL and then enter `add LocalScopeBenchmarks`
 ### Usage
 
 ```julia
-using LocalScopeBenchmarks
+julia> using LocalScopeBenchmarks
 ```
 
-This package provides `@localbtime`, `@localbenchmark`, and `@localbelapsed`, analogous to `@btime`, `@benchmark`, and `@belapsed` from BenchmarkTools.jl. Each should support the same inputs and return the same types as their BenchmarkTools.jl versions (in fact, each of them is just a thin wrapper around the existing BenchmarkTools macros). The only change is that the `@local*` versions try to interpolate local variables into the benchmarked expression rather than treating those variables as global.
+This package provides `@localbtime`, `@localbenchmark`, and `@localbelapsed`, analogous to `@btime`, `@benchmark`, and `@belapsed` from BenchmarkTools.jl. Each should support the same inputs and return the same types as their BenchmarkTools.jl equivalents (in fact, each of them is just a thin wrapper around the existing BenchmarkTools macros). The only change is that the `@local*` versions try to interpolate local variables into the benchmarked expression rather than treating those variables as global.
 
 Since we're just using BenchmarkTools under the hood, the `setup` and `evals` keyword arguments work as normal:
 
