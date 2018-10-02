@@ -4,6 +4,8 @@ import BenchmarkTools
 using MacroTools: MacroTools, postwalk, @capture
 using OrderedCollections: OrderedDict
 
+export @localbenchmark, @localbtime, @localbelapsed
+
 function collect_symbols(expr)
     assignments = OrderedDict{Symbol, Expr}()
     postwalk(expr) do x
@@ -17,9 +19,10 @@ end
 function parse_setup(setup::Expr)
     assignments = OrderedDict()
     postwalk(setup) do x
-        if @capture(x, _a = _b)
+        if @capture(x, a_ = b_)
             assignments[a] = b
         end
+        x
     end
     assignments
 end
@@ -46,21 +49,21 @@ function interpolate_locals_into_setup(args...)
     core, lower_params(params)
 end
 
-macro benchmark(args...)
+macro localbenchmark(args...)
     core, params = interpolate_locals_into_setup(args...)
     quote
         BenchmarkTools.@benchmark($(core), $(params...))
     end
 end
 
-macro btime(expr, args...)
+macro localbtime(expr, args...)
     core, params = interpolate_locals_into_setup(args...)
     quote
         BenchmarkTools.@btime($(core), $(params...))
     end
 end
 
-macro belapsed(expr, args...)
+macro localbelapsed(expr, args...)
     core, params = interpolate_locals_into_setup(args...)
     quote
         BenchmarkTools.@belapsed($(core), $(params...))
