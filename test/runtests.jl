@@ -91,4 +91,10 @@ global_x = 1.0
         @show j
         @test isregression(j)
     end
+
+    @testset "Other macros" begin
+        x = 1.0
+        @localbtime sin(x)
+        @localbelapsed sin(x)
+    end
 end
