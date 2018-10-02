@@ -87,7 +87,7 @@ global_x = 1.0
     @testset "Test that local benchmarks are faster than globals" begin
         t1 = @benchmark sin(global_x) evals=5  # note the lack of $
         t2 = @localbenchmark sin(global_x) evals=5
-        j = judge(ratio(median(t1), median(t2)))
+        j = judge_loosely(t1, t2)
         @show j
         @test isregression(j)
     end
@@ -96,5 +96,13 @@ global_x = 1.0
         x = 1.0
         @localbtime sin(x)
         @localbelapsed sin(x)
+    end
+
+    @testset "Interpolated values" begin
+        t1 = @benchmark sum($(rand(1000)))
+        t2 = @localbenchmark sum($(rand(1000)))
+        j = judge_loosely(t1, t2)
+        @show j
+        @test isinvariant(j)
     end
 end

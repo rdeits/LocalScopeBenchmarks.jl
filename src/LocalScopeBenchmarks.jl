@@ -1,16 +1,23 @@
 module LocalScopeBenchmarks
 
 import BenchmarkTools
-using MacroTools: MacroTools, postwalk, @capture
+using MacroTools: MacroTools, prewalk, postwalk, @capture
 using OrderedCollections: OrderedDict
 
 export @localbenchmark, @localbtime, @localbelapsed
 
 function collect_symbols(expr)
     assignments = OrderedDict{Symbol, Expr}()
-    postwalk(expr) do x
+    prewalk(expr) do x
         if x isa Symbol
             assignments[x] = Expr(:$, x)
+            return nothing
+        elseif x isa Expr && x.head == :$
+            # Don't recurse inside $() interpolations,
+            # since those will already be interpolated
+            return nothing
+        else
+            return x
         end
     end
     assignments
@@ -56,14 +63,14 @@ macro localbenchmark(args...)
     end
 end
 
-macro localbtime(expr, args...)
+macro localbtime(args...)
     core, params = interpolate_locals_into_setup(args...)
     quote
         BenchmarkTools.@btime($(core), $(params...))
     end
 end
 
-macro localbelapsed(expr, args...)
+macro localbelapsed(args...)
     core, params = interpolate_locals_into_setup(args...)
     quote
         BenchmarkTools.@belapsed($(core), $(params...))
