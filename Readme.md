@@ -67,10 +67,10 @@ We got the same measurement as `@btime sin($x)` without having to add a `$`. Hoo
 
 ```julia
 using Pkg
-Pkg.add("LocalScopeBenchmarks")
+Pkg.add("https://github.com/rdeits/LocalScopeBenchmarks.jl")
 ```
 
-or just press `]` at the Julia REPL and then enter `add LocalScopeBenchmarks`
+or just press `]` at the Julia REPL and then enter `add https://github.com/rdeits/LocalScopeBenchmarks.jl`
 
 ### Usage
 
