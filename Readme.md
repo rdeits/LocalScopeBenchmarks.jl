@@ -80,3 +80,33 @@ using LocalScopeBenchmarks
 
 This package provides `@localbtime`, `@localbenchmark`, and `@localbelapsed`, analogous to `@btime`, `@benchmark`, and `@belapsed` from BenchmarkTools.jl. Each should support the same inputs and return the same types as their BenchmarkTools.jl versions (in fact, each of them is just a thin wrapper around the existing BenchmarkTools macros). The only change is that the `@local*` versions try to interpolate local variables into the benchmarked expression rather than treating those variables as global.
 
+Since we're just using BenchmarkTools under the hood, the `setup` and `evals` keyword arguments work as normal:
+
+```julia
+julia> x = 1.0
+1.0
+
+julia> @localbtime f(x) setup=(f = sin)
+  6.791 ns (0 allocations: 0 bytes)
+```
+
+```julia
+julia> @localbtime x^2 evals=100
+  0.290 ns (0 allocations: 0 bytes)
+```
+
+You can also still interpolate values into the expression with `$` if you really want:
+
+```julia
+# Includes the time spent calling `rand(1000)`
+julia> @localbtime sum(rand(1000))
+  1.084 μs (1 allocation: 7.94 KiB)
+```
+
+```julia
+# Interpolates the *value* of `rand(1000)` so that it's not
+# computed inside the benchmark:
+julia> @localbtime sum($(rand(1000)))
+  69.160 ns (0 allocations: 0 bytes)
+```
+
